@@ -1,30 +1,26 @@
 
-import React, { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
+import React from 'react'
+import ReactDOM from 'react-dom/client'
 import { Amplify } from 'aws-amplify'
-import { cognitoUserPoolsTokenProvider } from 'aws-amplify/auth/cognito'
-import './index.css'
+import { cognitoUserPoolsTokenProvider } from 'aws-amplify/auth'
+import { sessionStorage } from 'aws-amplify/utils'
+
 import App from './App.jsx'
+import './index.css'
 
 Amplify.configure({
   Auth: {
     Cognito: {
       userPoolId: import.meta.env.VITE_COGNITO_USER_POOL_ID,
       userPoolClientId: import.meta.env.VITE_COGNITO_CLIENT_ID,
-      loginWith: {
-        email: true,
-      },
     },
   },
 })
 
-// Mantém os tokens somente durante a sessão da aba.
-cognitoUserPoolsTokenProvider.setKeyValueStorage(
-  window.sessionStorage
-)
+cognitoUserPoolsTokenProvider.setKeyValueStorage(sessionStorage)
 
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <React.StrictMode>
     <App />
-  </StrictMode>,
+  </React.StrictMode>,
 )
