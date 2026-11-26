@@ -2,8 +2,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { Amplify } from 'aws-amplify'
-import { cognitoUserPoolsTokenProvider } from 'aws-amplify/auth'
-import { sessionStorage } from 'aws-amplify/utils'
+import { cognitoUserPoolsTokenProvider } from 'aws-amplify/auth/cognito'
 
 import App from './App.jsx'
 import './index.css'
@@ -17,7 +16,8 @@ Amplify.configure({
   },
 })
 
-cognitoUserPoolsTokenProvider.setKeyValueStorage(sessionStorage)
+// Mantém a sessão apenas enquanto a aba estiver aberta
+cognitoUserPoolsTokenProvider.setKeyValueStorage(window.sessionStorage)
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
